@@ -9,6 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #import <Cocoa/Cocoa.h>
 #import <TKUtility/TKUtility.h>
+@class RRFNotificationView;
 
 @interface RRFNotificationController : NSObject <TKComponentBundleLoading> {
 
@@ -17,11 +18,16 @@
   NSDictionary                                                *definition;
   id                                                          delegate;
   NSString                                                    *errorLog;
-  IBOutlet NSView                                             *view;
+  IBOutlet RRFNotificationView                                *view;
 
   // ADDITIONAL MEMBERS ////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
-    
+  BOOL allowClickToProceed; // should we allow the subject to click to proceed
+  NSArray *argv;            // list of key paths, relative to the registry,
+                            // which will be substituted into the prompt
+  NSString *baseString;     // base string complete w/ format place-holders
+  NSString *formattedString;// the string resulting from argument substitution
+  NSString *secretKeyCombo; // key combo used for admin exit
 }
 
 // PROTOCOL PROPERTIES /////////////////////////////////////////////////////////
@@ -29,11 +35,15 @@
 @property (assign)              NSDictionary                    *definition;
 @property (assign)              id <TKComponentBundleLoading>   delegate;
 @property (nonatomic, retain)   NSString                        *errorLog;
-@property (assign)              IBOutlet NSView                 *view;
+@property (assign)              IBOutlet RRFNotificationView    *view;
 
 // ADDITIONAL PROPERTIES ///////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
+@property (readonly) BOOL allowClickToProceed;
+@property (retain) NSArray *argv;
+@property (copy) NSString *baseString;
+@property (retain) NSString *formattedString;
+@property (copy) NSString *secretKeyCombo;
 
 #pragma mark REQUIRED PROTOCOL METHODS
 /**
@@ -122,13 +132,22 @@
  Add the error to an ongoing error log
  */
 - (void)registerError: (NSString *)theError;
+/**
+ Exit from this and go to next component.
+ */
+- (IBAction)exit: (id)sender;
 
 #pragma mark Preference Keys
 // HERE YOU DEFINE KEY REFERENCES FOR ANY PREFERENCE VALUES
 // ex: NSString * const RRFNotificationNameOfPreferenceKey;
 ////////////////////////////////////////////////////////////////////////////////
-NSString * const RRFNotificationTaskNameKey;
+NSString * const RRFNotificationArgumentListKey;
+NSString * const RRFNotificationBaseStringKey;
 NSString * const RRFNotificationDataDirectoryKey;
+NSString * const RRFNotificationSecretKeyComboKey;
+NSString * const RRFNotificationShouldAllowSubjectClickKey;
+NSString * const RRFNotificationTaskNameKey;
+
 
 #pragma mark Internal Strings
 // HERE YOU DEFINE KEYS FOR CONSTANT STRINGS

@@ -30,6 +30,8 @@
 		404B5F2D12524A5600437416 /* RRFNotificationManifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404B5F2C12524A5600437416 /* RRFNotificationManifest.plist */; };
 		404B5F2E12524A5600437416 /* RRFNotificationManifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404B5F2C12524A5600437416 /* RRFNotificationManifest.plist */; };
 		4063B2B512551F490096BFE1 /* RRFNotification.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* RRFNotification.bundle */; };
+		40ACEEF0135E1CE500DE7D87 /* RRFNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40ACEEEF135E1CE500DE7D87 /* RRFNotificationView.m */; };
+		40ACEEF1135E1CE500DE7D87 /* RRFNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40ACEEEF135E1CE500DE7D87 /* RRFNotificationView.m */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -103,6 +105,8 @@
 		404B5ED41250B59C00437416 /* Mock_AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mock_AppDelegate.m; sourceTree = "<group>"; };
 		404B5ED51250B59C00437416 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		404B5F2C12524A5600437416 /* RRFNotificationManifest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RRFNotificationManifest.plist; sourceTree = "<group>"; };
+		40ACEEEE135E1CE500DE7D87 /* RRFNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRFNotificationView.h; sourceTree = "<group>"; };
+		40ACEEEF135E1CE500DE7D87 /* RRFNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RRFNotificationView.m; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* RRFNotification.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RRFNotification.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -167,6 +171,8 @@
 			children = (
 				40340001122D574E003CABA9 /* RRFNotificationController.h */,
 				40340002122D574E003CABA9 /* RRFNotificationController.m */,
+				40ACEEEE135E1CE500DE7D87 /* RRFNotificationView.h */,
+				40ACEEEF135E1CE500DE7D87 /* RRFNotificationView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -346,6 +352,7 @@
 				401F07721254F8FB00E31086 /* Mock_AppDelegate.m in Sources */,
 				401F07731254F8FB00E31086 /* main.m in Sources */,
 				401F07741254F8FB00E31086 /* TKComponentEnumOption.m in Sources */,
+				40ACEEF1135E1CE500DE7D87 /* RRFNotificationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40340003122D574E003CABA9 /* RRFNotificationController.m in Sources */,
+				40ACEEF0135E1CE500DE7D87 /* RRFNotificationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

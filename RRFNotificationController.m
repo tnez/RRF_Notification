@@ -8,24 +8,41 @@
 //  University of Kentucky. All Rights Reserved.
 ////////////////////////////////////////////////////////////////////////////////
 #import "RRFNotificationController.h"
+#import "RRFNotificationView.h"
 
 #define RRFLogToTemp(fmt, ...) [delegate logStringToDefaultTempFile:[NSString stringWithFormat:fmt,##__VA_ARGS__]]
 #define RRFLogToFile(filename,fmt, ...) [delegate logString:[NSString stringWithFormat:fmt,##__VA_ARGS__] toDirectory:[delegate tempDirectory] toFile:filename]
 #define RRFPathToTempFile(filename) [[delegate tempDirectory] stringByAppendingPathComponent:filename]
 
+
+#pragma mark FORWARD DECLARATION OF PRIVATE METHODS
+@interface RRFNotificationController ()
+- (NSString *)resolveString;
+@end
+
 @implementation RRFNotificationController
 
-@synthesize delegate,definition,errorLog,view;  // add any member that has a 
-                                                //property
+@synthesize delegate;
+@synthesize definition;
+@synthesize errorLog;
+@synthesize view;
+@synthesize allowClickToProceed;
+@synthesize argv;
+@synthesize baseString;
+@synthesize formattedString;
+@synthesize secretKeyCombo;
 
 #pragma mark HOUSEKEEPING METHODS
 /**
  Give back any memory that may have been allocated by this bundle
  */
 - (void)dealloc {
-  [errorLog release];
+  [errorLog release];errorLog=nil;
   // any additional release calls go here
   // ...
+  [argv release];argv=nil;
+  [baseString release];baseString=nil;
+  [secretKeyCombo release];secretKeyCombo=nil;
   [super dealloc];
 }
 
@@ -100,11 +117,18 @@
   [self setErrorLog:@""]; // clear the error log
   // WHAT NEEDS TO BE INITIALIZED BEFORE THIS COMPONENT CAN OPERATE?
   // ...
+  allowClickToProceed = [[definition valueForKey:RRFNotificationShouldAllowSubjectClickKey] boolValue];
+  [self setArgv:[[definition valueForKey:RRFNotificationArgumentListKey] componentsSeparatedByString:@","]];
+  [self setBaseString:[definition valueForKey:RRFNotificationBaseStringKey]];
+  [self setSecretKeyCombo:[definition valueForKey:RRFNotificationSecretKeyComboKey]];
+  [self setFormattedString:[self resolveString]];
   // LOAD NIB
   // ...
   if([NSBundle loadNibNamed:RRFNotificationMainNibNameKey owner:self]) {
     // SETUP THE INTERFACE VALUES
     // ...
+    [view setMyKeyCombo:secretKeyCombo];
+    [[view window] makeFirstResponder:view];
   } else {
     // nib did not load, so throw error
     [self registerError:@"Could not load Nib file"];
@@ -127,14 +151,12 @@
   // any finalization should be done here:
   // ...
   // remove any temporary data files (uncomment below to use default)
-  /*
   NSError *tFileMoveError = nil;
   [[NSFileManager defaultManager] removeItemAtPath:RRFPathToTempFile([delegate defaultTempFile]) error:&tFileMoveError];
   if(tFileMoveError) {
     ELog(@"%@",[tFileMoveError localizedDescription]);
     [tFileMoveError release]; tFileMoveError=nil;
   }
-   */
   // de-register any possible notifications
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -191,11 +213,55 @@
                      stringByAppendingString:@"\n"]];
 }
 
+/** Exit */
+- (IBAction)exit: (id)sender {
+  RRFLogToTemp(formattedString);
+  [delegate componentDidFinish:self];
+}
+
+/**
+   Given the base string and argument list full of registry key paths,
+return the correctly formatted prompt string.
+ 
+ In order to feed an array of arguments generated at run-time into a
+ va_list I had to borrow ideas from the web. For further explanation see:
+ http://cocoawithlove.com/2009/05/variable-argument-lists-in-cocoa.html
+*/
+- (NSString *)resolveString { 
+  // make sure we have a valid base string to work with
+  if(!baseString) {
+    ELog(@"Base String cannot be nil!");
+    return nil;
+  }
+  NSString *retVal;
+  // if we have arguments to substitute...
+  if([argv count] > 0) {
+    // create an empty arg queue
+    NSMutableArray *argStack = [[NSMutableArray alloc] initWithCapacity:[argv count]];
+    // for each argv create a valid argument and add to queue
+    for(NSString *argString in argv) {
+      DLog(@"Trying to add for key path: %@, the corresponding object is %@",argString,[delegate valueForRegistryKeyPath:argString]);
+      [argStack addObject:[delegate valueForRegistryKeyPath:argString]];
+    }
+    char *argList = (char *)malloc(sizeof(NSString *) * [argStack count]);
+    [argStack getObjects:(id *)argList];
+    retVal = [[NSString alloc] initWithFormat:baseString arguments:argList];
+    free(argList);
+  } else { // we have no arguments to substitute...
+    retVal = [baseString copy];
+  }
+  return [retVal autorelease];
+}
+
 #pragma mark Preference Keys
 // HERE YOU DEFINE KEY REFERENCES FOR ANY PREFERENCE VALUES
 // ex: NSString * const RRFNotificationNameOfPreferenceKey = @"RRFNotificationNameOfPreference"
-NSString * const RRFNotificationTaskNameKey = @"RRFNotificationTaskName";
+NSString * const RRFNotificationArgumentListKey = @"RRFNotificationArgumentList";
+NSString * const RRFNotificationBaseStringKey = @"RRFNotificationBaseString";
 NSString * const RRFNotificationDataDirectoryKey = @"RRFNotificationDataDirectory";
+NSString * const RRFNotificationSecretKeyComboKey = @"RRFNotificationSecretKeyCombo";
+NSString * const RRFNotificationShouldAllowSubjectClickKey = @"RRFNotificationShouldAllowSubjectClick";
+NSString * const RRFNotificationTaskNameKey = @"RRFNotificationTaskName";
 
 #pragma mark Internal Strings
 // HERE YOU DEFINE KEYS FOR CONSTANT STRINGS //

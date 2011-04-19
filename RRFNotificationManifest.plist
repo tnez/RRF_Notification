@@ -46,6 +46,68 @@
 			<key>help</key>
 			<string>Directory where component will save data file - Initial value is set to session global</string>
 		</dict>
-	</array>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationBaseString</string>
+			<key>displayName</key>
+			<string>Base String</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>The base string that will be used. For help with format tokens see http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html#//apple_ref/doc/uid/TP40004265</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationArgumentList</string>
+			<key>displayName</key>
+			<string>Argument List</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>A comma-seperated list of registry key paths that you wish to substitute into the base string.</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationSecretKeyCombo</string>
+			<key>displayName</key>
+			<string>Admin Key Combo (optional)</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>A key combination as string that will advance the notification screen for use when admin intervention should be forced.</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldAllowSubjectClick</string>
+			<key>displayName</key>
+			<string>Should Allow Subject To Advance?</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the component will display a button which can be clicked to proceed.</string>
+                </dict>
+        </array>
 </dict>
 </plist>

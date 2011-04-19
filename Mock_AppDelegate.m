@@ -195,7 +195,7 @@
 
     // create component
     component = [[TKComponentController loadFromDefinition:componentDefinition] retain];
-    currentComponentID = [[componentDefinition valueForKey:RRFNotificationTaskNameKey] retain];  
+    currentComponentID = [[componentDefinition valueForKey:@"RRFNotificationTaskName"] retain];  
   
     // setup component
     [component setSubject:subject];
@@ -374,6 +374,10 @@
     [registry setValue:[subject study] forKey:RRFSessionProtocolKey];
     [registry setValue:[subject subject_id] forKey:RRFSessionSubjectKey];
     [registry setValue:[subject session] forKey:RRFSessionSessionKey];
+    [registry setValue:[subject drug] forKey:@"drug"];
+    [registry setValue:[subject drugLevel] forKey:@"drugLevel"];
+    [registry setValue:[subject drugCode] forKey:@"drugCode"];
+    [registry setValue:[subject drugDose] forKey:@"drugDose"];
     [registry setValue:[NSDate date] forKey:RRFSessionStartKey];
     DLog(@"Loaded global values in registry");
     // create empty history
@@ -390,10 +394,10 @@
     [registry valueForKey:RRFSessionComponentsKey];
     // task ID and a nested runs mutable dictionary
     [compSection setValue:[NSMutableDictionary dictionary]
-                   forKey:[[component definition] valueForKey:@"RRFDSSTTaskName"]];
+                   forKey:[[component definition] valueForKey:@"RRFNotificationTaskName"]];
     // create an empty run registry inside
     NSMutableDictionary *curSection=
-    [compSection valueForKey:[[component definition] valueForKey:@"RRFDSSTTaskName"]];
+    [compSection valueForKey:[[component definition] valueForKey:@"RRFNotificationTaskName"]];
     [curSection setValue:[NSMutableArray array] forKey:RRFSessionRunKey];
     
     DLog(@"Created entries for all components in registry");
@@ -420,6 +424,15 @@
   if(![self bounceRegistryToDisk]) {
     ELog(@"Unable to write the registry to disk");
   }
+}
+- (id)valueForRegistryKeyPath: (NSString *)aKeyPath {
+  if(aKeyPath)
+  {
+    return [registry valueForKeyPath:aKeyPath];
+  }
+  // key was nil
+  ELog(@"No key-path was provided");
+  return nil;
 }
 
 #pragma mark Parameters
