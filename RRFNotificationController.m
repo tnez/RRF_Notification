@@ -18,7 +18,7 @@
 #pragma mark FORWARD DECLARATION OF PRIVATE METHODS
 @interface RRFNotificationController ()
 - (NSUInteger)getModifierFlags;
-- (NSInteger)numberOfFormatTokens;
+- (NSInteger)numberOfFormatTokens: (NSString *)aString;
 - (NSString *)resolveString;
 @end
 
@@ -45,6 +45,7 @@
   // ...
   [argv release];argv=nil;
   [baseString release];baseString=nil;
+  [formattedString release];formattedString=nil;
   [secretKeyCombo release];secretKeyCombo=nil;
   [super dealloc];
 }
