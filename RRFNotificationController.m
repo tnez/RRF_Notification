@@ -18,6 +18,7 @@
 #pragma mark FORWARD DECLARATION OF PRIVATE METHODS
 @interface RRFNotificationController ()
 - (NSUInteger)getModifierFlags;
+- (NSInteger)numberOfFormatTokens;
 - (NSString *)resolveString;
 @end
 
@@ -247,6 +248,34 @@
 }
 
 /**
+   Return the umber of format tokens in the given string.
+
+   We can use this valid to avoid segmentation faults. If we have 2
+   format tokens, but only 1 object in our argument stack, a
+   segmentation fault will occur. To avoid this, we must assert that
+   the number of format tokens and the number of arguments are equal
+   before attemptiting format expansion with a given string. To this
+   end I write this method.
+*/
+- (NSInteger)numberOfFormatTokens: (NSString *)aString {
+  NSInteger count = 0; // counter
+  // loop through and check every character
+  for( NSInteger i=0;            // start at beginning
+       i < [aString length] - 1; // stop at second to last, since 
+                                 // a substitution requires a spec
+                                 // trailing the %
+       i++ ) { 
+    // if the char is a '%'...
+    if([aString characterAtIndex:i] == '%' &&
+       [aString characterAtIndex:i+1] != '%') {
+      // ...we have a match
+      count++;
+    }
+  } // end of for loop
+  return count;
+}
+
+/**
    Given the base string and argument list full of registry key paths,
 return the correctly formatted prompt string.
  
@@ -255,28 +284,70 @@ return the correctly formatted prompt string.
  http://cocoawithlove.com/2009/05/variable-argument-lists-in-cocoa.html
 */
 - (NSString *)resolveString { 
-  // make sure we have a valid base string to work with
+
+  // if we don't have a base string, we can't do anything... return
+  // nil
   if(!baseString) {
     ELog(@"Base String cannot be nil!");
     return nil;
   }
-  NSString *retVal;
+
+  // initialize an empty return value
+  NSString *retVal = nil;
+
   // if we have arguments to substitute...
   if([argv count] > 0) {
+
     // create an empty arg queue
-    NSMutableArray *argStack = [[NSMutableArray alloc] initWithCapacity:[argv count]];
+    NSMutableArray *argStack = [[NSMutableArray alloc] init];
+
     // for each argv create a valid argument and add to queue
     for(NSString *argString in argv) {
       DLog(@"Trying to add for key path: %@, the corresponding object is %@",argString,[delegate valueForRegistryKeyPath:argString]);
-      [argStack addObject:[delegate valueForRegistryKeyPath:argString]];
+      id theObj = nil;
+
+      // if a value is found at key path - add value to stack
+      if( theObj = [delegate valueForRegistryKeyPath:argString] ) {
+        [argStack addObject:theObj];
+      }
+
+      // else, elog no value found
+      else {
+        ELog(@"Did not find key-path: %@",argString);
+      }
+    } // end of for loop
+
+    // if the number of extracted arguments is equal to the number of
+    // format tokens... proceed to turn array into va_list
+    if( [self numberOfFormatTokens:baseString] == [argStack count] ) {
+
+      // turn our array into simple bytes
+      char *argList = (char *)malloc(sizeof(NSString *) * [argStack count]);
+      [argStack getObjects:(id *)argList];
+      retVal = [[NSString alloc] initWithFormat:baseString arguments:argList];
+      free(argList);
+    } 
+
+    // else, mismatch between number of arguments and format tokens
+    else {
+      retVal = @"There was a problem expanding the base string -- see log for description";
+      ELog(@"Mismatch between arguments: %d and format tokens: %d",[argStack count],[self numberOfFormatTokens:baseString]);
     }
-    char *argList = (char *)malloc(sizeof(NSString *) * [argStack count]);
-    [argStack getObjects:(id *)argList];
-    retVal = [[NSString alloc] initWithFormat:baseString arguments:argList];
-    free(argList);
-  } else { // we have no arguments to substitute...
+
+  } // end of arg substitution
+
+  // we have no arguments to substitute
+  else {
+    // make sure we don't have any format tokens in there
+    if( [self numberOfFormatTokens:baseString] > 0 ) {
+      retVal = @"There was a problem expanding the base string -- see log for description";
+      ELog(@"%d format tokens were found in base string, but no arguments were given for substitution",[self numberOfFormatTokens:baseString]);
+    }
+    // if no tokens, then we can substitute the base string as is...
     retVal = [baseString copy];
   }
+
+  // return whatever value we derived
   return [retVal autorelease];
 }
 
