@@ -1,10 +1,12 @@
-//
+////////////////////////////////////////////////////////////////////////////////
 //  RRFNotificationView.h
-//  Notification
-//
-//  Created by Travis Nesland on 4/19/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+//  RRFNotification
+//  ----------------------------------------------------------------------------
+//  Author: Travis Nesland
+//  Created: 4/19/11
+//  Copyright 2011, Residential Research Facility,
+//  University of Kentucky. All Rights Reserved.
+////////////////////////////////////////////////////////////////////////////////
 
 #import <Cocoa/Cocoa.h>
 @class RRFNotificationController;
