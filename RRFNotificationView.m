@@ -36,14 +36,6 @@
     // Drawing code here.
 }
 
-// - (void)keyDown: (NSEvent *)theEvent {
-//   if([[theEvent charactersIgnoringModifiers] isEqualToString:myKeyCombo]) {
-//     [myDelegate exit:self];
-//   } else {
-//     [super keyDown:theEvent];
-//   }
-// }
-
 - (BOOL)performKeyEquivalent: (NSEvent *)theEvent {
   // get characters
   NSString *theChar = [[theEvent charactersIgnoringModifiers] lowercaseString];
