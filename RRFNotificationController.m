@@ -17,6 +17,7 @@
 
 #pragma mark FORWARD DECLARATION OF PRIVATE METHODS
 @interface RRFNotificationController ()
+- (NSUInteger)getModifierFlags;
 - (NSString *)resolveString;
 @end
 
@@ -31,6 +32,7 @@
 @synthesize baseString;
 @synthesize formattedString;
 @synthesize secretKeyCombo;
+@synthesize secretMods;
 
 #pragma mark HOUSEKEEPING METHODS
 /**
@@ -51,7 +53,9 @@
  Start the component - will receive this message from the component controller
  */
 - (void)begin {
-    
+  // some debug loggin
+  DLog(@"My secret key is: %@",secretKeyCombo);
+  DLog(@"My secret modifier mask is: %x",secretMods);
 }
 /**
  Return a string representation of the data directory
@@ -120,14 +124,16 @@
   allowClickToProceed = [[definition valueForKey:RRFNotificationShouldAllowSubjectClickKey] boolValue];
   [self setArgv:[[definition valueForKey:RRFNotificationArgumentListKey] componentsSeparatedByString:@","]];
   [self setBaseString:[definition valueForKey:RRFNotificationBaseStringKey]];
-  [self setSecretKeyCombo:[definition valueForKey:RRFNotificationSecretKeyComboKey]];
+  [self setSecretKeyCombo:[[definition valueForKey:RRFNotificationSecretKeyComboKey] lowercaseString]];
+  secretMods = [self getModifierFlags];
   [self setFormattedString:[self resolveString]];
   // LOAD NIB
   // ...
   if([NSBundle loadNibNamed:RRFNotificationMainNibNameKey owner:self]) {
     // SETUP THE INTERFACE VALUES
     // ...
-    [view setMyKeyCombo:secretKeyCombo];
+    [view setMyChar:secretKeyCombo];
+    [view setMyMods:secretMods];
     [[view window] makeFirstResponder:view];
   } else {
     // nib did not load, so throw error
@@ -220,6 +226,27 @@
 }
 
 /**
+   Get the mask for the modifier keys as specified in prefs.
+   @return NSUInteger An unsigned integer representing a bit mask for the specified modifier keys
+*/
+- (NSUInteger)getModifierFlags {
+  // start with the device indenpendent modifier flags mask
+  NSUInteger myFlags = 0;
+  // for each of the allowed modifier types,
+  // if specified yes in prefs, bitwise OR with our flags
+  if([[definition valueForKey:RRFNotificationShouldRequireAltKey] boolValue]) 
+    myFlags |= NSAlternateKeyMask;
+  if([[definition valueForKey:RRFNotificationShouldRequireCommandKey] boolValue])
+    myFlags |= NSCommandKeyMask;
+  if([[definition valueForKey:RRFNotificationShouldRequireControlKey] boolValue])
+    myFlags |= NSControlKeyMask;
+  if([[definition valueForKey:RRFNotificationShouldRequireShiftKey] boolValue])
+    myFlags |= NSShiftKeyMask;
+  // return the result
+  return myFlags;
+}
+
+/**
    Given the base string and argument list full of registry key paths,
 return the correctly formatted prompt string.
  
@@ -261,6 +288,10 @@ NSString * const RRFNotificationBaseStringKey = @"RRFNotificationBaseString";
 NSString * const RRFNotificationDataDirectoryKey = @"RRFNotificationDataDirectory";
 NSString * const RRFNotificationSecretKeyComboKey = @"RRFNotificationSecretKeyCombo";
 NSString * const RRFNotificationShouldAllowSubjectClickKey = @"RRFNotificationShouldAllowSubjectClick";
+NSString * const RRFNotificationShouldRequireAltKey = @"RRFNotificationShouldRequireAlt";
+NSString * const RRFNotificationShouldRequireCommandKey = @"RRFNotificationShouldRequireCommand";
+NSString * const RRFNotificationShouldRequireControlKey = @"RRFNotificationShouldRequireControl";
+NSString * const RRFNotificationShouldRequireShiftKey = @"RRFNotificationShouldRequireShift";
 NSString * const RRFNotificationTaskNameKey = @"RRFNotificationTaskName";
 
 #pragma mark Internal Strings

@@ -11,8 +11,10 @@
 
 @interface RRFNotificationView : NSView {
   IBOutlet RRFNotificationController *myDelegate;
-  IBOutlet NSString *myKeyCombo;
+  NSString *myChar;
+  NSUInteger myMods;
 }
 @property (assign) IBOutlet RRFNotificationController *myDelegate;
-@property (copy) IBOutlet NSString *myKeyCombo;
+@property (copy) NSString *myChar;
+@property (readwrite) NSUInteger myMods;
 @end

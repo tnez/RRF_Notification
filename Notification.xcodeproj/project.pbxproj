@@ -31,7 +31,6 @@
 		404B5F2E12524A5600437416 /* RRFNotificationManifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404B5F2C12524A5600437416 /* RRFNotificationManifest.plist */; };
 		4063B2B512551F490096BFE1 /* RRFNotification.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* RRFNotification.bundle */; };
 		40ACEEF0135E1CE500DE7D87 /* RRFNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40ACEEEF135E1CE500DE7D87 /* RRFNotificationView.m */; };
-		40ACEEF1135E1CE500DE7D87 /* RRFNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40ACEEEF135E1CE500DE7D87 /* RRFNotificationView.m */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -352,7 +351,6 @@
 				401F07721254F8FB00E31086 /* Mock_AppDelegate.m in Sources */,
 				401F07731254F8FB00E31086 /* main.m in Sources */,
 				401F07741254F8FB00E31086 /* TKComponentEnumOption.m in Sources */,
-				40ACEEF1135E1CE500DE7D87 /* RRFNotificationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

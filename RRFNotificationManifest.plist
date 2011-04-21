@@ -80,22 +80,6 @@
                 </dict>
                 <dict>
                         <key>optionIdentifier</key>
-			<string>RRFNotificationSecretKeyCombo</string>
-			<key>displayName</key>
-			<string>Admin Key Combo (optional)</string>
-			<key>type</key>
-			<integer>0</integer>
-			<key>default</key>
-			<string></string>
-			<key>allowsEdit</key>
-			<true/>
-			<key>allowsNull</key>
-			<true/>
-			<key>help</key>
-			<string>A key combination as string that will advance the notification screen for use when admin intervention should be forced.</string>
-                </dict>
-                <dict>
-                        <key>optionIdentifier</key>
 			<string>RRFNotificationShouldAllowSubjectClick</string>
 			<key>displayName</key>
 			<string>Should Allow Subject To Advance?</string>
@@ -107,6 +91,78 @@
 			<true/>
 			<key>help</key>
 			<string>If checked, the component will display a button which can be clicked to proceed.</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationSecretKeyCombo</string>
+			<key>displayName</key>
+			<string>Admin Key</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>A key that will advance the notification screen for use when admin intervention should be forced.</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireAlt</string>
+			<key>displayName</key>
+			<string>Require 'ALT'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the alt key</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireCommand</string>
+			<key>displayName</key>
+			<string>Require 'Command'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the 'Command' key</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireControl</string>
+			<key>displayName</key>
+			<string>Require 'Control'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the 'Control' key</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireShift</string>
+			<key>displayName</key>
+			<string>Require 'Shift'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the 'Shift' key</string>
                 </dict>
         </array>
 </dict>

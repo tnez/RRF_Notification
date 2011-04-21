@@ -28,6 +28,7 @@
   NSString *baseString;     // base string complete w/ format place-holders
   NSString *formattedString;// the string resulting from argument substitution
   NSString *secretKeyCombo; // key combo used for admin exit
+  NSUInteger secretMods;    // the modifier flags that should be present
 }
 
 // PROTOCOL PROPERTIES /////////////////////////////////////////////////////////
@@ -44,6 +45,7 @@
 @property (copy) NSString *baseString;
 @property (retain) NSString *formattedString;
 @property (copy) NSString *secretKeyCombo;
+@property (readonly) NSUInteger secretMods;
 
 #pragma mark REQUIRED PROTOCOL METHODS
 /**
@@ -146,6 +148,10 @@ NSString * const RRFNotificationBaseStringKey;
 NSString * const RRFNotificationDataDirectoryKey;
 NSString * const RRFNotificationSecretKeyComboKey;
 NSString * const RRFNotificationShouldAllowSubjectClickKey;
+NSString * const RRFNotificationShouldRequireAltKey;
+NSString * const RRFNotificationShouldRequireCommandKey;
+NSString * const RRFNotificationShouldRequireControlKey;
+NSString * const RRFNotificationShouldRequireShiftKey;
 NSString * const RRFNotificationTaskNameKey;
 
 

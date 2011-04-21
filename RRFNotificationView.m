@@ -12,14 +12,15 @@
 @implementation RRFNotificationView
 
 @synthesize myDelegate;
-@synthesize myKeyCombo;
+@synthesize myChar;
+@synthesize myMods;
 
 - (BOOL)acceptsFirstResponder {
   return YES;
 }
 
 - (void)dealloc {
-  [myKeyCombo release];myKeyCombo=nil;
+  [myChar release];myChar=nil;
   [super dealloc];
 }
 
@@ -35,12 +36,29 @@
     // Drawing code here.
 }
 
-- (void)keyDown: (NSEvent *)theEvent {
-  if([[theEvent charactersIgnoringModifiers] isEqualToString:myKeyCombo]) {
+// - (void)keyDown: (NSEvent *)theEvent {
+//   if([[theEvent charactersIgnoringModifiers] isEqualToString:myKeyCombo]) {
+//     [myDelegate exit:self];
+//   } else {
+//     [super keyDown:theEvent];
+//   }
+// }
+
+- (BOOL)performKeyEquivalent: (NSEvent *)theEvent {
+  // get characters
+  NSString *theChar = [[theEvent charactersIgnoringModifiers] lowercaseString];
+  // get modifiers
+  NSUInteger theMods = [theEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask;
+  // debug log
+  DLog(@"Received Chars: %@ Mods: %x",theChar,theMods);
+  // if this is the admin key combo...
+  if([theChar isEqualToString:myChar] && theMods == myMods) {
+    // ...then let's exit
     [myDelegate exit:self];
-  } else {
-    [super keyDown:theEvent];
+    return YES;
   }
+  // else...
+  return NO;
 }
 
 @end
